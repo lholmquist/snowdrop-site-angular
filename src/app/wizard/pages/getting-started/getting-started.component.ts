@@ -5,7 +5,7 @@ import {
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 
-import { DependencyCheckService } from 'ngx-forge';
+import { DependencyCheckService } from 'ngx-launcher';
 import { KeycloakService } from '../../../shared/keycloak.service';
 
 @Component({
@@ -13,37 +13,20 @@ import { KeycloakService } from '../../../shared/keycloak.service';
 	styleUrls: ['./getting-started.component.scss'],
 	templateUrl: './getting-started.component.html'
 })
-export class GettingStartedComponent implements OnInit {
-	projectName: string = '';
+export class GettingStartedComponent {
+	public projectName: string = '';
 
 	private subscriptions: Subscription[] = [];
 
 	constructor(private keycloak: KeycloakService,
-		private dependencyCheckService: DependencyCheckService,
 		private router: Router) {
 	}
 
-	ngOnInit(): void {
-		this.subscriptions.push(this.dependencyCheckService.getDependencyCheck().subscribe((val) => {
-			this.projectName = val.projectName;
-		}));
-	}
-
-	ngOnDestroy() {
-		this.subscriptions.forEach((sub) => {
-			sub.unsubscribe();
-		});
-	}
-
-	validateProjectName() {
-		this.dependencyCheckService.validateProjectName(this.projectName);
-	}
-
-	cancel(): void {
+	public cancel(): void {
 		this.router.navigate(['/']);
 	}
 
-	routeToApp(): void {
+	public routeToApp(): void {
 		this.router.navigate(['/wizard', this.projectName]);
 	}
 }

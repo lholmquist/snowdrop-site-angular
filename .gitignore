@@ -3,6 +3,7 @@
 templates/template_old.yml
 
 # compiled output
+/build
 /dist
 /app/*.js
 /app/*.js.map

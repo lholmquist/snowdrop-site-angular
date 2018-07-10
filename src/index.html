@@ -8,6 +8,13 @@
 
     <script>
       try {
+        Function.prototype.bind = Function.prototype.bind || function (thisp) {
+            var fn = this;
+            return function () {
+                return fn.apply(thisp, arguments);
+            };
+        };
+
         const jsonSettings = "${LAUNCHER_JSON_SETTINGS}";
         window.settings = JSON.parse(jsonSettings);
         console.info("Injected settings contains: " + jsonSettings);

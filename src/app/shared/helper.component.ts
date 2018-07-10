@@ -1,4 +1,4 @@
-import { Config, HelperService } from "ngx-forge";
+import { Config, HelperService } from "ngx-launcher";
 import { Location } from "@angular/common";
 
 export class LaunchHelper extends HelperService {

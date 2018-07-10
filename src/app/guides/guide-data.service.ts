@@ -1,7 +1,7 @@
 import { Injectable, OnInit, OnDestroy } from "@angular/core";
 import { Http } from '@angular/http';
 import { RegistryService } from '../components';
-import { HelperService } from "ngx-forge";
+import { HelperService } from 'ngx-launcher';
 
 @Injectable()
 export class GuideDataService implements OnInit, OnDestroy {
