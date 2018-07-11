@@ -7,19 +7,14 @@
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
 
     <script>
+      // Parse settings injected by environment pre-processing
       try {
-        Function.prototype.bind = Function.prototype.bind || function (thisp) {
-            var fn = this;
-            return function () {
-                return fn.apply(thisp, arguments);
-            };
-        };
-
-        const jsonSettings = "${LAUNCHER_JSON_SETTINGS}";
-        window.settings = JSON.parse(jsonSettings);
+        //jsonSettings will be replaced by script 'scripts/entrypoint.sh'
+        const jsonSettings = "$LAUNCHER_JSON_SETTINGS";
+        window.injectedSettings = JSON.parse(jsonSettings);
         console.info("Injected settings contains: " + jsonSettings);
       } catch (e) {
-        window.settings = undefined;
+        window.injectedSettings = undefined;
         console.info("Injected settings are undefined");
       }
 
@@ -30,6 +25,7 @@
     </script>
 
     <style>
+
       #loading-screen .main {
         display: flex;
         flex-direction: column;
@@ -46,7 +42,7 @@
         background-color: #c00;
         width: 100%;
         height: 550px;
-        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/assets/backdrop.2611ea7139d86297fb7b13bed73f1896.png');
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('/assets/backdrop.png');
         background-size: cover;
       }
 

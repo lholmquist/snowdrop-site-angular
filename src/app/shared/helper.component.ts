@@ -1,20 +1,18 @@
-import { Config, HelperService } from "ngx-launcher";
-import { Location } from "@angular/common";
+import { Config, HelperService } from 'ngx-launcher';
 
 export class LaunchHelper extends HelperService {
-	private readonly launchConfig: Config;
+  private readonly launchConfig: Config;
 
-	constructor(config: Config) {
-		super(config);
-		this.launchConfig = config;
-	}
+  constructor(config: Config) {
+    super(config);
+    this.launchConfig = config;
+  }
 
-	getBackendUrl(): string {
-		let url = this.launchConfig.get('backend_api_url') ? this.launchConfig.get('backend_api_url') : "";
-		return Location.stripTrailingSlash(url);
-	}
+  public getBackendUrl(): string {
+    return this.launchConfig.get('backend_api_url');
+  }
 
-	getOrigin(): string {
-		return this.launchConfig.get('origin');
-	}
+  public getOrigin(): string {
+    return this.launchConfig.get('origin');
+  }
 }

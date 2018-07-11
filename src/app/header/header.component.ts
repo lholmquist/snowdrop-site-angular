@@ -43,7 +43,9 @@ export class HeaderComponent {
 
 	constructor(private router: Router, private keycloak: KeycloakService) {
 		router.events.subscribe((url: any) => {
-			this.wizard = url.url.indexOf("wizard") > -1;
+			if (url && url.url) {
+				this.wizard = url.url.indexOf("wizard") > -1;
+			}
 		});
 	}
 }

@@ -71,9 +71,9 @@ import 'zone.js/dist/zone';
  */
 // import 'intl/locale-data/jsonp/en';
 if ('production' === process.env.ENV) {
-	// Production
+  // Production
 
 } else {
 
-	// Development
+  // Development
 }

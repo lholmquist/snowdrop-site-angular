@@ -1,66 +1,67 @@
-import { Injectable } from "@angular/core";
-import { Location } from "@angular/common";
-import { Config } from "ngx-launcher";
+import { Injectable } from '@angular/core';
+import { Location } from '@angular/common';
+import { Config } from 'ngx-launcher';
 
-declare var settings: object;
+declare var injectedSettings: object;
 
 @Injectable()
 export class LaunchConfig extends Config {
-	protected readonly settings = {
-		origin: 'launcher',
-		backend_url: process.env.LAUNCHER_BACKEND_URL,
-		keycloak_url: process.env.LAUNCHER_KEYCLOAK_URL,
-		keycloak_realm: process.env.LAUNCHER_KEYCLOAK_REALM,
-		keycloak_client_id: process.env.LAUNCHER_KEYCLOAK_CLIENT_ID,
-		sentry_dsn: process.env.LAUNCHER_FRONTEND_SENTRY_DSN
-	};
+  protected readonly settings = {
+    origin: 'launcher',
+    commit_hash: process.env.LAUNCHER_FRONTEND_COMMITHASH,
+    backend_url: process.env.LAUNCHER_BACKEND_URL,
+    keycloak_url: process.env.LAUNCHER_KEYCLOAK_URL,
+    keycloak_realm: process.env.LAUNCHER_KEYCLOAK_REALM,
+    keycloak_client_id: process.env.LAUNCHER_KEYCLOAK_CLIENT_ID,
+    sentry_dsn: process.env.LAUNCHER_FRONTEND_SENTRY_DSN
+  };
 
-	constructor() {
-		super();
-		this.processInitConfig();
-		this.postProcessSettings();
-		console.info("LaunchConfig is: " + JSON.stringify(this.settings));
-	}
+  constructor() {
+    super();
+    this.processInitConfig();
+    this.postProcessSettings();
+    console.info('LaunchConfig is: ' + JSON.stringify(this.settings));
+  }
 
-	private processInitConfig(settings?) {
-		if (settings) {
-			for (const property in settings) {
-				if (settings.hasOwnProperty(property) && settings[property]) {
-					this.settings[property] = settings[property];
-				}
-			}
-		}
-	}
+  public get(key: string): string {
+    return this.settings[key];
+  }
 
-	private postProcessSettings() {
-		let backendApiUrl = this.settings['backend_url'];
-		if (!backendApiUrl) {
-			backendApiUrl = 'http://backend-public-devex.195.201.87.126.nip.io/api';
-		}
-		backendApiUrl = Location.stripTrailingSlash(backendApiUrl);
+  private processInitConfig() {
+    if (injectedSettings) {
+      for (const property in injectedSettings) {
+        if (injectedSettings.hasOwnProperty(property) && injectedSettings[property]) {
+          this.settings[property] = injectedSettings[property];
+        }
+      }
+    }
+  }
 
-		this.settings['backend_api_url'] = backendApiUrl;
-		this.settings['backend_websocket_url'] = this.createBackendWebsocketUrl(backendApiUrl);
+  private postProcessSettings() {
+    const backendApiUrl = Location.stripTrailingSlash(this.settings['backend_url']);
 
-		//Used by old wizard
-		this.settings['backend_url'] = backendApiUrl + '/launchpad';
-	}
+    if (!backendApiUrl) {
+      throw new Error('Invalid backend_url: ' + backendApiUrl);
+    }
 
-	private createBackendWebsocketUrl(backendApiUrl: string) {
-		let url = backendApiUrl.substring(0, backendApiUrl.indexOf('/api'));
-		if (url.indexOf('https') !== -1) {
-			return url.replace('https', 'wss');
-		} else if (url.indexOf('http') !== -1) {
-			return url.replace('http', 'ws');
-		} else if (url.startsWith("/") || url.startsWith(":")) {
-			// /launch/api
-			url = (url.startsWith(":") ? location.hostname : location.host) + url;
-			return (location.protocol === "https:" ? "wss://" : "ws://") + url;
-		}
-		throw new Error("Error while creating websocket url from backend url: " + backendApiUrl);
-	}
+    this.settings['backend_api_url'] = backendApiUrl;
+    this.settings['backend_websocket_url'] = this.createBackendWebsocketUrl(backendApiUrl);
 
-	get(key: string): string {
-		return this.settings[key];
-	}
+    // Used by old wizard
+    this.settings['backend_url'] = backendApiUrl + '/launchpad';
+  }
+
+  private createBackendWebsocketUrl(backendApiUrl: string) {
+    let url = backendApiUrl.substring(0, backendApiUrl.indexOf('/api'));
+    if (url.indexOf('https') !== -1) {
+      return url.replace('https', 'wss');
+    } else if (url.indexOf('http') !== -1) {
+      return url.replace('http', 'ws');
+    } else if (url.startsWith('/') || url.startsWith(':')) {
+      // /launch/api
+      url = (url.startsWith(':') ? location.hostname : location.host) + url;
+      return (location.protocol === 'https:' ? 'wss://' : 'ws://') + url;
+    }
+    throw new Error('Error while creating websocket url from backend url: ' + backendApiUrl);
+  }
 }

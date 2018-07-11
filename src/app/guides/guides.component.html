@@ -12,7 +12,7 @@
       <div class="row row-cards-pf">
         <div *ngFor="let guide of buffer" class="col-sm-6 guide-block">
           <div class="guide-inner">
-            <h3 class="title">{{ guide?.title | slice:0:50 }}{{guide?.title.length > 50 ? '...' : ''}}</h3>
+            <h3 class="title"><a class="link" [routerLink]="[guide.urls.local]">{{ guide?.title | slice:0:50 }}{{guide?.title.length > 50 ? '...' : ''}}</a></h3>
             <p class="tags">
               <span *ngFor="let t of guide.tags" class="tag {{t}}" (click)="filter.value = t; filterGuides(t)">{{t}}</span>
             </p>

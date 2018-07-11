@@ -1,34 +1,37 @@
 {
-  "name": "launcher-frontend",
-  "version": "1.0.0-Alpha1",
-  "description": "A frontend for a launcher, microservices booster generator",
-  "homepage": "https://developers.redhat.com/launch/",
+  "name": "snowdrop-site",
+  "version": "1.0.0",
+  "description": "A website for Snowdrop",
+  "homepage": "http://snowdrop.me",
   "repository": {
     "type": "git",
-    "url": "https://github.com/fabric-launcher"
+    "url": "https://github.com/snowdrop/snowdrop-site-angular"
   },
   "contributors": [
     {
-      "name": "Lincoln Baxter, III",
-      "email": "lincoln@redhat.com"
-    },
-    {
       "name": "Erik Jan de Wit",
       "email": "edewit@redhat.com"
+    },
+    {
+      "name": "Lincoln Baxter, III",
+      "email": "lincoln@redhat.com"
     }
   ],
   "license": "Apache-2.0",
   "scripts": {
     "build": "webpack --config config/webpack.dev.js --mode development",
-    "build:prod": "webpack --config config/webpack.prod.js -p",
+    "build:prod": "webpack --config config/webpack.prod.js -p ",
+    "start": "npm run start:prod",
+    "start:dev": "webpack-dev-server --config config/webpack.dev.js --mode development --progress --inline --watch --host 0.0.0.0 --port 8088",
+    "start:prod": "node scripts/prod-server.js",
+    "test": "npm run lint && karma start",
     "lint": "npm run tslint \"src/**/*.ts\"",
+    "tslint": "tslint",
+    
     "postinstall": "npm run build:prod",
     "prestart": "echo 'Starting the dev server.'",
     "prestart:prod": "echo 'Starting the prod server.'",
-    "reinstall": "rm -rf node_modules && npm install",
-    "start": "npm run start:prod",
-    "start:dev": "webpack-dev-server --config config/webpack.dev.js --mode development --progress --inline --watch --host 0.0.0.0 --port 8088",
-    "start:prod": "node scripts/prod-server.js"
+    "reinstall": "rm -rf node_modules && npm install"
   },
   "dependencies": {
     "@angular/animations": "~6.0.6",
@@ -41,21 +44,21 @@
     "@angular/platform-browser-dynamic": "~6.0.6",
     "@angular/platform-server": "~6.0.6",
     "@angular/router": "~6.0.5",
-    "asciidoctor.js": "1.5.7-rc.1",
+    "asciidoctor.js": "^1.5.6",
     "core-js": "~2.5.7",
     "express": "4.16.3",
     "jssha": "~2.3.1",
     "morgan": "1.9.0",
-    "raven-js": "~3.26.2",
-    "rxjs": "~6.2.1",
-    "rxjs-compat": "~6.2.1",
-    "uuid": "~3.2.1",
-    "zone.js": "~0.8.26",
     "ngx-base": "2.3.2",
     "ngx-bootstrap": "3.0.1",
     "ngx-launcher": "1.0.1",
     "patternfly": "3.51.2",
-    "patternfly-ng": "3.11.2"
+    "patternfly-ng": "3.11.2",
+    "raven-js": "~3.26.2",
+    "rxjs": "~6.2.1",
+    "rxjs-compat": "~6.2.1",
+    "uuid": "~3.2.1",
+    "zone.js": "~0.8.26"
   },
   "devDependencies": {
     "@angular-devkit/build-optimizer": "0.6.8",
